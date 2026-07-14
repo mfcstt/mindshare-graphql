@@ -1,0 +1,50 @@
+import { RegisterInput } from "../dtos/input/auth.input";
+import { prismaClient } from "../../prisma/prisma";
+import { hashPassword } from "../utils/hash";
+import { signJwt } from "../utils/jwt";
+import { User } from "@prisma/client";
+
+export class AuthService {
+    async signup(data: RegisterInput) {
+        const existingUser = await prismaClient.user.findUnique({
+            where: {
+                email: data.email
+            }
+        })
+
+        if (existingUser) {
+            throw new Error("User already exists")
+        }
+
+        const hashedPassword = await hashPassword(data.password)
+
+        const user = await prismaClient.user.create({
+            data: {
+                email: data.email,
+                password: hashedPassword,
+                name: data.name,
+            }
+        })
+
+        return this.generateTokens(user)
+    }
+
+
+    generateTokens(user: User) {
+        const token = signJwt({
+            id: user.id,
+            email: user.email
+        }, '15m'
+        )
+        const refreshToken = signJwt({
+            id: user.id,
+            email: user.email
+        }, '7d'
+        )
+        return {
+            token,
+            refreshToken,
+            user
+        }
+    }
+}
