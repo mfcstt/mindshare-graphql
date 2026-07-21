@@ -1,13 +1,15 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, FieldResolver, Mutation, Resolver, Root } from "type-graphql";
 import { LoginInput, RegisterInput } from "../dtos/input/auth.input";
 import { LoginOutput, RegisterOutput } from "../dtos/output/auth.output";
 import { AuthService } from "../services/auth.service";
+import { UserService } from "../services/user.service";
 
 
 @Resolver()
 export class AuthResolver {
 
     private authService = new AuthService()
+    private userService = new UserService()
 
 
     @Mutation(() => LoginOutput)

@@ -10,3 +10,13 @@ export class CreateIdeaInput {
     description?: string
 
 }
+
+@InputType()
+export class UpdateIdeaInput {
+    @Field(() => String, { nullable: true })
+    title?: string
+
+    @Field(() => String, { nullable: true })
+    description?: string
+
+}
