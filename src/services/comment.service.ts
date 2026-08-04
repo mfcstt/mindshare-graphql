@@ -11,4 +11,12 @@ export class CommentService {
             }
         })
     }
+
+    async findById(ideaId: string) {
+        return prismaClient.comment.findMany({
+            where: {
+                ideaId
+            }
+        })
+    }
 }

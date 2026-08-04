@@ -6,6 +6,7 @@
 type CommentModel {
   author: UserModel
   authorId: String!
+  comments: CommentModel!
   content: String!
   createdAt: DateTimeISO!
   id: ID!
@@ -37,6 +38,7 @@ scalar DateTimeISO
 type IdeaModel {
   author: UserModel
   authorId: String!
+  comments: [CommentModel!]
   createdAt: DateTimeISO!
   description: String
   id: ID!

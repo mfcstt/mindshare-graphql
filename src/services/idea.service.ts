@@ -53,7 +53,11 @@ export class IdeaService {
     }
 
     async getAllIdeas() {
-        return prismaClient.idea.findMany()
+        return prismaClient.idea.findMany({
+            include: {
+                comments: true
+            }
+        })
     }
 
     async findById(id: string) {
