@@ -28,6 +28,7 @@ input CreateIdeaInput {
 input CreateUserInput {
   email: String!
   name: String!
+  role: Role
 }
 
 """
@@ -64,15 +65,18 @@ type Mutation {
   createIdea(data: CreateIdeaInput!): IdeaModel!
   createUser(data: CreateUserInput!): UserModel!
   deleteIdea(id: String!): Boolean!
+  deleteUser(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   signup(data: RegisterInput!): RegisterOutput!
   toggleVote(ideaId: String!): Boolean!
   updateIdea(data: UpdateIdeaInput!, id: String!): IdeaModel!
+  updateUser(data: UpdateUserInput!, id: String!): UserModel!
 }
 
 type Query {
   getAllIdeas: [IdeaModel!]!
   getUser(id: String!): UserModel!
+  listUsers: [UserModel!]!
 }
 
 input RegisterInput {
@@ -87,9 +91,22 @@ type RegisterOutput {
   user: UserModel!
 }
 
+"""User role in the system"""
+enum Role {
+  admin
+  member
+  owner
+  viewer
+}
+
 input UpdateIdeaInput {
   description: String
   title: String
+}
+
+input UpdateUserInput {
+  name: String
+  role: Role
 }
 
 type UserModel {
@@ -98,6 +115,7 @@ type UserModel {
   id: ID!
   name: String!
   password: String
+  role: Role
   updatedAt: DateTimeISO!
 }
 

@@ -11,17 +11,24 @@ datasource db {
   provider = "sqlite"
 }
 
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Role {
+  owner
+  admin
+  member
+  viewer
+}
 
-  ideas    Idea[]
-  votes    Vote[]
-  comments Comment[]
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  role      Role      @default(member)
+  ideas     Idea[]
+  votes     Vote[]
+  comments  Comment[]
 }
 
 model Idea {
@@ -60,4 +67,3 @@ model Comment {
   ideaId String
   idea   Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
 }
-
