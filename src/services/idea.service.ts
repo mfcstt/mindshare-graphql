@@ -33,4 +33,26 @@ export class IdeaService {
             }
         })
     }
+
+    async deleteIdea(id: string) {
+        const idea = await prismaClient.idea.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if (!idea) {
+            throw new Error("Idea not found")
+        }
+
+        return prismaClient.idea.delete({
+            where: {
+                id
+            }
+        })
+    }
+
+    async getAllIdeas() {
+        return prismaClient.idea.findMany()
+    }
 }

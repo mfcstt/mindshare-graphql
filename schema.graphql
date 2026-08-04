@@ -42,12 +42,14 @@ type LoginOutput {
 type Mutation {
   createIdea(data: CreateIdeaInput!): IdeaModel!
   createUser(data: CreateUserInput!): UserModel!
+  deleteIdea(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   signup(data: RegisterInput!): RegisterOutput!
   updateIdea(data: UpdateIdeaInput!, id: String!): IdeaModel!
 }
 
 type Query {
+  getAllIdeas: [IdeaModel!]!
   getUser(id: String!): UserModel!
 }
 
