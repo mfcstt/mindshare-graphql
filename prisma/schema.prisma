@@ -19,7 +19,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ideas Idea[]
+  ideas    Idea[]
+  votes    Vote[]
+  comments Comment[]
 }
 
 model Idea {
@@ -31,4 +33,31 @@ model Idea {
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  votes    Vote[]
+  comments Comment[]
 }
+
+model Vote {
+  id     String @id @default(uuid())
+  userId String
+  ideaId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  idea   Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, ideaId])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  ideaId String
+  idea   Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+}
+

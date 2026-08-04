@@ -17,7 +17,7 @@ export class AuthService {
             throw new Error("User not found")
         }
 
-        const validPassword = await comparePassword(data.password, existingUser.password)
+        const validPassword = await comparePassword(data.password, existingUser.password || "")
 
         if (!validPassword) {
             throw new Error("Invalid password")
