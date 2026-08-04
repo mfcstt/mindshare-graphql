@@ -39,11 +39,13 @@ type IdeaModel {
   author: UserModel
   authorId: String!
   comments: [CommentModel!]
+  countVotes: Int
   createdAt: DateTimeISO!
   description: String
   id: ID!
   title: String!
   updatedAt: DateTimeISO!
+  votes: [VoteModel!]
 }
 
 input LoginInput {
@@ -64,6 +66,7 @@ type Mutation {
   deleteIdea(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   signup(data: RegisterInput!): RegisterOutput!
+  toggleVote(ideaId: String!): Boolean!
   updateIdea(data: UpdateIdeaInput!, id: String!): IdeaModel!
 }
 
@@ -96,4 +99,12 @@ type UserModel {
   name: String!
   password: String
   updatedAt: DateTimeISO!
+}
+
+type VoteModel {
+  id: ID!
+  idea: IdeaModel
+  ideaId: String!
+  user: UserModel
+  userId: String!
 }

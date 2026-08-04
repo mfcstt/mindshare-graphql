@@ -1,6 +1,7 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from "type-graphql";
+import { Field, GraphQLISODateTime, ID, ObjectType, Int } from "type-graphql";
 import { UserModel } from "./user.model";
 import { CommentModel } from "./comment.model";
+import { VoteModel } from "./vote.model";
 
 
 @ObjectType()
@@ -23,6 +24,12 @@ export class IdeaModel {
 
     @Field(() => [CommentModel], { nullable: true })
     comments?: CommentModel[]
+
+    @Field(() => [VoteModel], { nullable: true })
+    votes?: VoteModel[]
+
+    @Field(() => Int, { nullable: true })
+    countVotes?: number
 
     @Field(() => GraphQLISODateTime)
     createdAt!: Date

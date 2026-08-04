@@ -1,4 +1,4 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
+import { Arg, FieldResolver, Mutation, Query, Resolver, Root, UseMiddleware, Int } from "type-graphql";
 import { IdeaModel } from "../models/idea.model";
 import { IdeaService } from "../services/idea.service";
 import { IsAuth } from "../middlewares/auth.middleware";
@@ -7,6 +7,8 @@ import { GqlUser } from "../graphql/decorators/user.decorator";
 import { User } from "@prisma/client";
 import { UserModel } from "../models/user.model";
 import { UserService } from "../services/user.service";
+import { VoteModel } from "../models/vote.model";
+import { VoteService } from "../services/vote.service";
 
 @Resolver(() => IdeaModel)
 @UseMiddleware(IsAuth)
@@ -14,6 +16,7 @@ export class IdeaResolver {
 
     private ideaService = new IdeaService()
     private userService = new UserService()
+    private voteService = new VoteService()
 
     @Mutation(() => IdeaModel)
     async createIdea(
@@ -51,5 +54,19 @@ export class IdeaResolver {
         @Root() idea: IdeaModel
     ): Promise<UserModel> {
         return this.userService.findUser(idea.authorId)
+    }
+
+    @FieldResolver(() => [VoteModel])
+    async votes(
+        @Root() idea: IdeaModel
+    ): Promise<VoteModel[]> {
+        return this.voteService.listVotesByIdea(idea.id)
+    }
+
+    @FieldResolver(() => Int)
+    async countVotes(
+        @Root() idea: IdeaModel
+    ): Promise<number> {
+        return this.voteService.countVotes(idea.id)
     }
 }
