@@ -60,7 +60,7 @@ export function UserCard({
                                             </span>
                                         )}
                                         {isCurrentUser && (
-                                            <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                                            <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
                                                 Você
                                             </span>
                                         )}
@@ -68,7 +68,7 @@ export function UserCard({
                                 )}
                                 {isCurrentUser && !user.role && (
                                     <div className="flex items-center gap-2 mt-2 flex-wrap">
-                                        <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                                        <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">
                                             Você
                                         </span>
                                     </div>

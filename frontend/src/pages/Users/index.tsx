@@ -9,10 +9,12 @@ import type { User } from "@/types"
 import { useAuthStore } from "@/stores/auth"
 
 import { UserCard } from "./components/UserCard"
+import { UserBadges } from "./components/UserBadges"
 import { LIST_USERS } from "@/lib/graphql/queries/users"
 import { DeleteUserDialog } from "./components/DeleteUserDialog"
 import { EditUserDialog } from "./components/EditUserDialog"
 import { InviteUserDialog } from "./components/InviteUser"
+import { calculateUserStats } from "@/lib/utils"
 
 export function UsersPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -40,6 +42,8 @@ export function UsersPage() {
 
   const users = data?.listUsers ?? []
 
+  const stats = useMemo(() => calculateUserStats(users), [users])
+
   const filteredUsers = useMemo(() => {
     const q = searchQuery.toLowerCase().trim()
     if (!q) return users
@@ -56,8 +60,9 @@ export function UsersPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-medium text-indigo-600">Usuários</h1>
-
+            <UserBadges stats={stats} />
           </div>
+
           <div className="flex flex-wrap items-center gap-3 self-end sm:self-auto">
             <div className="flex items-center gap-2">
               <Label htmlFor="search" className="text-sm whitespace-nowrap">

@@ -29,9 +29,27 @@ export function formatRelativeDate(date: Date | string): string {
   return `Há ${diffInDays} ${diffInDays === 1 ? "dia" : "dias"}`
 }
 
-import type { Idea } from "@/types"
+import type { Idea, User } from "@/types"
+
+export interface UserStats {
+  totalAdmins: number
+  totalMembers: number
+}
+
+export function calculateUserStats(users: User[]): UserStats {
+  const totalAdmins = users.filter(
+    (u) => u.role === "admin" || u.role === "owner"
+  ).length
+  const totalMembers = users.length - totalAdmins
+
+  return {
+    totalAdmins,
+    totalMembers,
+  }
+}
 
 export type SortOption = "recent" | "votes" | "comments" | "oldest"
+
 
 export interface IdeaStats {
   totalIdeas: number
