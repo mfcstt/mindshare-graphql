@@ -6,7 +6,7 @@ export type JwtPayload = {
 }
 
 export const signJwt = (payload: JwtPayload, expiresIn?: string) => {
-    const secret: Secret = process.env.JWT_SECRET as unknown as Secret
+    const secret: Secret = (process.env.JWT_SECRET || 'mindshare-secret-key-12345') as unknown as Secret
     let options: SignOptions = {}
     const expiration = expiresIn
     if (expiration) {
@@ -18,6 +18,6 @@ export const signJwt = (payload: JwtPayload, expiresIn?: string) => {
 }
 
 export const verifyJwt = (token: string) => {
-    const secret: Secret = process.env.JWT_SECRET as unknown as Secret
+    const secret: Secret = (process.env.JWT_SECRET || 'mindshare-secret-key-12345') as unknown as Secret
     return jwt.verify(token, secret) as JwtPayload
 }

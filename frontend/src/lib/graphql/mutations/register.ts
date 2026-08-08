@@ -1,14 +1,15 @@
 import { gql } from "@apollo/client"
 
 export const REGISTER = gql`
-    mutation Register($input: RegisterInput!) {
-        register(input: $input) {
+    mutation Signup($data: RegisterInput!) {
+        signup(data: $data) {
             token
             refreshToken
             user {
                 id
                 name
                 email
+                role
                 createdAt
                 updatedAt
             }
