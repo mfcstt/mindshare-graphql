@@ -48,8 +48,7 @@ export function calculateUserStats(users: User[]): UserStats {
   }
 }
 
-export type SortOption = "recent" | "votes" | "comments" | "oldest"
-
+export type SortOption = "recent" | "mine" | "votes" | "comments" | "oldest"
 
 export interface IdeaStats {
   totalIdeas: number
@@ -75,9 +74,17 @@ export function calculateIdeaStats(ideas: Idea[]): IdeaStats {
   }
 }
 
-export function sortIdeas(ideas: Idea[], sortBy: SortOption): Idea[] {
-  return [...ideas].sort((a, b) => {
-    if (sortBy === "recent") {
+export function sortIdeas(ideas: Idea[], sortBy: SortOption, currentUserId?: string): Idea[] {
+  let result = [...ideas]
+
+  if (sortBy === "mine" && currentUserId) {
+    result = result.filter(
+      (idea) => idea.authorId === currentUserId || idea.author?.id === currentUserId
+    )
+  }
+
+  return result.sort((a, b) => {
+    if (sortBy === "recent" || sortBy === "mine") {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     }
     if (sortBy === "oldest") {
@@ -95,4 +102,4 @@ export function sortIdeas(ideas: Idea[], sortBy: SortOption): Idea[] {
     }
     return 0
   })
-}
+}

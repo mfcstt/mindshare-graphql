@@ -35,6 +35,10 @@ export class IdeaResolver {
         @Arg('id', () => String) id: string,
         @GqlUser() user: User
     ): Promise<IdeaModel> {
+        const idea = await this.ideaService.findById(id)
+        if (idea.authorId !== user.id) {
+            throw new Error("Você só tem permissão para editar suas próprias ideias.")
+        }
         return this.ideaService.updateIdea(id, data)
     }
 
@@ -43,9 +47,14 @@ export class IdeaResolver {
         @Arg('id', () => String) id: string,
         @GqlUser() user: User
     ): Promise<boolean> {
+        const idea = await this.ideaService.findById(id)
+        if (idea.authorId !== user.id) {
+            throw new Error("Você só tem permissão para deletar suas próprias ideias.")
+        }
         await this.ideaService.deleteIdea(id)
         return true
     }
+
 
     @Query(() => [IdeaModel])
     async getAllIdeas(): Promise<IdeaModel[]> {

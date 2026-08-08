@@ -44,9 +44,9 @@ export function CommentArea({
                             onClick={handleVote}
                             disabled={!user}
                             className={`${idea?.votes?.some((v) => v.userId === user?.id)
-                                ? "bg-green-100 border-green-600 text-green-800"
-                                : "bg-green-50 border-green-500 text-green-700"
-                                } hover:bg-green-100`}
+                                ? "bg-emerald-100 border-emerald-600 text-emerald-800"
+                                : "bg-emerald-50 border-emerald-500 text-emerald-700"
+                                } hover:bg-emerald-100`}
                         >
                             <ThumbsUp className="mr-2 h-4 w-4" />
                             {idea?.countVotes || 0}
