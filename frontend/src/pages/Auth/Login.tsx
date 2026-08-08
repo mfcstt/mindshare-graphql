@@ -89,7 +89,7 @@ export function Login() {
                     <CardDescription>Cadastre-se agora mesmo</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button variant="outline" className="w-full" render={<Link to="/signup" />}>
+                    <Button variant="outline" className="w-full" render={<Link to="/cadastrar" />}>
                         Criar conta
                     </Button>
                 </CardContent>

@@ -1,8 +1,10 @@
 import { Layout } from './components/Layout'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Login } from './pages/Login'
-import { SignUp } from './pages/SignUp'
+import { Login } from './pages/Auth/Login'
+import { SignUp } from './pages/Auth/SignUp'
 import { useAuthStore } from './stores/auth'
+import { IdeasPage } from './pages/Ideas'
+import { UsersPage } from './pages/Users'
 
 
 
@@ -30,13 +32,30 @@ function App() {
           }
         />
         <Route
-          path="/signup"
+          path="/cadastrar"
           element={
             <PublicRoute>
               <SignUp />
             </PublicRoute>
           }
         />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <IdeasPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/usuarios"
+          element={
+            <ProtectedRoute>
+              <UsersPage />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </Layout>
   )

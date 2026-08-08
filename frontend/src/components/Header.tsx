@@ -10,7 +10,7 @@ export function Header() {
     const location = useLocation()
     const navigate = useNavigate()
     const isIdeasPage = location.pathname === "/"
-    const isMembersPage = location.pathname === "/members"
+    const isMembersPage = location.pathname === "/usuarios"
 
     const handleLogout = () => {
         logout()
@@ -35,14 +35,14 @@ export function Header() {
                                 Ideais
                             </Button>
                         </Link>
-                        <Link to="/members">
+                        <Link to="/usuarios">
                             <Button
                                 size="sm"
                                 className="gap-2 rounded-xl h-9 px-4"
                                 variant={isMembersPage ? "default" : "ghost"}
                             >
                                 <Users className="h-4 w-4" />
-                                Membros
+                                Usuários
                             </Button>
                         </Link>
                     </div>
