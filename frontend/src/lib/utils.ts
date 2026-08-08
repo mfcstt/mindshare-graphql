@@ -26,9 +26,55 @@ export function formatRelativeDate(date: Date | string): string {
     return `Há ${diffInHours} ${diffInHours === 1 ? "hora" : "horas"}`
   }
 
-  if (diffInDays === 1) {
-    return "Ontem"
-  }
-
   return `Há ${diffInDays} ${diffInDays === 1 ? "dia" : "dias"}`
 }
+
+import type { Idea } from "@/types"
+
+export type SortOption = "recent" | "votes" | "comments" | "oldest"
+
+export interface IdeaStats {
+  totalIdeas: number
+  totalComments: number
+  totalVotes: number
+}
+
+export function calculateIdeaStats(ideas: Idea[]): IdeaStats {
+  const totalIdeas = ideas.length
+  const totalComments = ideas.reduce(
+    (acc, idea) => acc + (idea.comments?.length || 0),
+    0
+  )
+  const totalVotes = ideas.reduce(
+    (acc, idea) => acc + (idea.countVotes || idea.votes?.length || 0),
+    0
+  )
+
+  return {
+    totalIdeas,
+    totalComments,
+    totalVotes,
+  }
+}
+
+export function sortIdeas(ideas: Idea[], sortBy: SortOption): Idea[] {
+  return [...ideas].sort((a, b) => {
+    if (sortBy === "recent") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    }
+    if (sortBy === "oldest") {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    }
+    if (sortBy === "votes") {
+      const votesA = a.countVotes || a.votes?.length || 0
+      const votesB = b.countVotes || b.votes?.length || 0
+      return votesB - votesA
+    }
+    if (sortBy === "comments") {
+      const commentsA = a.comments?.length || 0
+      const commentsB = b.comments?.length || 0
+      return commentsB - commentsA
+    }
+    return 0
+  })
+}
