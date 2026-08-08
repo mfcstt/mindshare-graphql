@@ -4,6 +4,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import { data } from "react-router-dom";
+import { toast } from "sonner";
+import { CREATE_IDEA } from "@/lib/graphql/mutations/idea";
 
 interface CreateIdeaDialogProps {
     open: boolean;
@@ -16,10 +20,36 @@ export function CreateIdeaDialog({
     onOpenChange,
     onCreated
 }: CreateIdeaDialogProps) {
+
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
-    const handleSubmit = () => { }
+    const [createIdea, { loading }] = useMutation(CREATE_IDEA, {
+        onCompleted() {
+            toast.success("Idea criada com sucesso")
+            onOpenChange(false)
+            onCreated?.()
+            setTitle('')
+            setDescription('')
+        },
+        onError() {
+            toast.error("Falha ao criar a ideia")
+        },
+    })
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        createIdea({
+            variables: {
+                data: {
+                    title,
+                    description
+                }
+            }
+        })
+
+    }
 
     const handleCancel = () => {
         setTitle('')
@@ -45,6 +75,7 @@ export function CreateIdeaDialog({
                             placeholder="Dê um nome para a ideia"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
+                            disabled={loading}
                         />
                     </div>
                     <div className="space-y-1">
@@ -56,6 +87,7 @@ export function CreateIdeaDialog({
                             onChange={(e) => setDescription(e.target.value)}
                             rows={6}
                             className="resize-none"
+                            disabled={loading}
                         />
                     </div>
                     <div className="flex items-center justify-end gap-2">

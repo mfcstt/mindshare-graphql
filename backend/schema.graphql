@@ -6,7 +6,6 @@
 type CommentModel {
   author: UserModel
   authorId: String!
-  comments: CommentModel!
   content: String!
   createdAt: DateTimeISO!
   id: ID!
@@ -75,6 +74,7 @@ type Mutation {
 
 type Query {
   getAllIdeas: [IdeaModel!]!
+  getIdea(id: String!): IdeaModel
   getUser(id: String!): UserModel!
   listUsers: [UserModel!]!
 }

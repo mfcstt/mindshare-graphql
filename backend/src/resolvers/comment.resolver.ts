@@ -39,11 +39,5 @@ export class CommentResolver {
     ): Promise<UserModel> {
         return this.userService.findUser(comment.authorId)
     }
-
-    @FieldResolver(() => CommentModel)
-    async comments(
-        @Root() idea: IdeaModel
-    ): Promise<CommentModel[]> {
-        return this.commentService.findById(idea.id)
-    }
 }
+

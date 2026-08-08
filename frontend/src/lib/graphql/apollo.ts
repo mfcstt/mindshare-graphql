@@ -1,6 +1,6 @@
-import { useAuthStore } from "@/stores/auth"
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from "@apollo/client"
+import { ApolloClient, HttpLink, ApolloLink, InMemoryCache } from "@apollo/client"
 import { SetContextLink } from "@apollo/client/link/context"
+import { useAuthStore } from '../../stores/auth'
 
 
 const httpLink = new HttpLink({
@@ -12,10 +12,10 @@ const authLink = new SetContextLink((prevContext) => {
     return {
         headers: {
             ...prevContext.headers,
-            Authorization: token ? `Bearer ${token}` : ""
-        }
-    }
-})
+            authorization: token ? `Bearer ${token}` : "",
+        },
+    };
+});
 
 export const apolloClient = new ApolloClient({
     link: ApolloLink.from([authLink, httpLink]),
